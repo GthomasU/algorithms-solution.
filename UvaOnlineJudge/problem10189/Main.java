@@ -1,4 +1,4 @@
-package problema10189;
+package UvaOnlineJudge.problem10189;
 
 import java.util.Scanner;
 
