@@ -1,3 +1,5 @@
+package UvaOnlineJudge.problem100;
+
 import java.util.*;
 
 class Main {

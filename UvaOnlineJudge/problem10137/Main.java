@@ -1,63 +1,45 @@
 package UvaOnlineJudge.problem10137;
 
-import java.util.Scanner;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 class Main {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        String output = "";
         while (sc.hasNext()) {
             int n = sc.nextInt();
-            if (n == 0) {
-                break;
-            }
-            List<Double> gastos = new ArrayList<Double>();
+            if (n == 0) break;
+            List<Double> bills = new ArrayList<>();
             for (int i = 0; i < n; i++) {
-                gastos.add(sc.nextDouble());
+                bills.add(sc.nextDouble());
             }
-            double respuesta = solve(gastos);
-            String numeroString = String.format("%.16f", respuesta);
-            int index = numeroString.indexOf('.');
-            String resultado = numeroString.substring(0, index + 3);
-            output += String.format("$%s", resultado);
+            double output = solve(bills);
+            System.out.printf("$%.2f%n", output);
         }
-        output = output.replaceAll("\\$", "\n\\$");
-        System.out.print(output.substring(1));
-
         sc.close();
 
         System.exit(0);
     }
 
-    private static double solve(List<Double> gastos) {
-        Collections.sort(gastos);
-        double aporte = obtenerAporte(gastos);
-        double sumatoria = 0;
-        for (int i = 0; i < gastos.size(); i++) {
-            if (gastos.get(i) == aporte) {
-                continue;
-            }
-            double diferencia = aporte - gastos.get(i);
-
-            if (diferencia > 0) {
-                gastos.set(gastos.size() - 1 - i, gastos.get(gastos.size() - 1 - i) - diferencia);
-                sumatoria += diferencia;
+    private static double solve(List<Double> bills) {
+        double avg = getAverage(bills);
+        double sumPos = 0;
+        double sumNeg = 0;
+        for (Double bill : bills) {
+            double diff = (int) ((bill - avg) * 100.00) / 100.0;
+            if (diff > 0) {
+                sumPos += diff;
             } else {
-                break;
+                sumNeg += diff;
             }
         }
-        return sumatoria;
+        return Math.max(sumPos, -sumNeg);
     }
 
-    private static double obtenerAporte(List<Double> gastos) {
+    private static double getAverage(List<Double> gastos) {
         double suma = 0;
-        for (int i = 0; i < gastos.size(); i++) {
-            suma += gastos.get(i);
+        for (Double gasto : gastos) {
+            suma += gasto;
         }
         return suma / gastos.size();
     }
-
 }
